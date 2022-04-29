@@ -1,0 +1,8 @@
+---
+title: "Violence against female journalists"
+subtitle: "(Subtitle here)"
+author: "James Goldie, 360info"
+date: "2022-04-27"
+code-fold: true
+theme: style/article.scss
+---
