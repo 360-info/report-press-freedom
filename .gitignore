@@ -13,3 +13,7 @@ Thumbs.db
 
 # quarto
 /.quarto/
+
+# raw data isn't version controlled for privacy reasons
+# (even though it's deidentified)
+/data/survey-responses-translated.xlsx
