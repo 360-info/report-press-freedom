@@ -22,6 +22,28 @@ here("data", "survey-responses-translated.xlsx") %>%
   mutate(
     medium = recode(medium, "Cetak" = "Print", "Daring" = "Online",
       "Televisi" = "TV")) ->
+    # job_title_groups = recode(job_title,
+    #   "Pemimpin Redaksi" = "Editor in Chief",
+    #   "Redaktur Pelaksana" = "Managing Editor",
+    #   "Asisten Redaktur" = "Assistant Editor",
+    #   "Peniyar" = "Announcer/Presenter",
+    #   "Penyiar Radio" = "Announcer/Presenter",
+    #   "Penyiar radio" = "Announcer/Presenter",
+    #   "penyiar" = "Announcer/Presenter",
+    #   "Presenter" = "Announcer/Presenter",
+    #   "News Anchor" = "Announcer/Presenter",
+    #   "Produser" = "Producer",
+    #   "Kontributor" = "Contributor",
+    #   "Wartawan" = "Reporter",
+    #   "Wartawati" = "Reporter",
+    #   "Jurnalis" = "Reporter",
+    #   "Pewarta warga" = "Reporter",
+    #   "Video jurnalis" = "Reporter",
+    #   "Fotografer" = "Photographer",
+    #   "Freelance journalist" = "Reporter",
+    #   "Koresponden" = "Correspondent",
+    #   ??? Korlip  
+    #   ) ->
 tidy_responses
 
 # get_group_counts: get the counts and proportions of the rows,
