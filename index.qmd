@@ -10,6 +10,7 @@ theme: style/article.scss
 ```{r}
 library(tidyverse)
 library(here)
+library(glue)
 library(themes360info)
 ```
 
@@ -80,6 +81,13 @@ survey_long %>%
   ggplot(.) +
     aes(y = p, x = medium, fill = response) +
     geom_col(position = "stack") +
+    geom_text(
+      aes(label =
+        glue("{scales::percent(p, accuracy = 1)} of {scales::number(total_n)}")),
+      data = filter(., response == "Yes"),
+      hjust = "left", nudge_y = 0.05,
+      family = "Body 360info", size = 3,
+      colour = colours_360("darkgrey")) +
     facet_wrap(vars(measure_long)) +
     coord_flip() +
     scale_y_continuous(limits = c(0, 1), labels = scales::percent_format()) +
