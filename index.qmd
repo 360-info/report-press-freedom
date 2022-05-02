@@ -1,8 +1,109 @@
 ---
 title: "Violence against female journalists"
-subtitle: "(Subtitle here)"
+subtitle: "Visualising survey results"
 author: "James Goldie, 360info"
 date: "2022-04-27"
 code-fold: true
 theme: style/article.scss
 ---
+
+```{r}
+library(tidyverse)
+library(here)
+library(themes360info)
+```
+
+Let's bring the numbers in from the PR2Media survey, broken down by platform. I'm going to lengthene the data for plotting:
+
+```{r}
+survey_stats <-
+  read_csv(here("data", "survey-counts-by-medium.csv")) %>%
+  rename_with(
+    ~ str_replace(str_replace(.x, "_n$", "-n"), "_p$", "-p"),
+    -c(medium, total_n))
+
+# add a total row
+totals <-
+  summarise(survey_stats,
+    medium = "All platforms",
+    total_n = sum(total_n),
+    across(ends_with("-n"), sum)) %>%
+  mutate(across(
+    ends_with("-n"),
+    list("prop" = ~ .x / total_n))) %>%
+  rename_with(~ str_replace(.x, "-n_prop$", "-p"))
+
+# now lengthen
+survey_stats %>% 
+  bind_rows(totals) %>%
+  pivot_longer(
+    cols = -c(medium, total_n),
+    names_to = c("measure", ".value"),
+    names_sep = "-") %>%
+  # actually, i also want the inverse probabilities (ie. the nos) so that we can
+  # plot "solid bars"
+  rename(Yes_n = n, Yes_p = p) %>%
+  mutate(
+    No_n = total_n - Yes_n,
+    No_p = 1 - Yes_p) %>%
+  pivot_longer(
+    cols = -c(medium, total_n, measure),
+    names_to = c("response", ".value"),
+    names_sep = "_") %>%
+  mutate(
+    measure_long = recode(measure,
+      "has_bodyshaming"         =
+        "Have you ever received<br>**body shaming comments**<br>online?",
+      "has_nonsex_comments"     =
+        "Have you ever received<br>annoying/harassing<br>**non-sexualcomments?**",
+      "has_sexual_comments"     =
+        "Have you ever received<br>annoying/harassing **sexual<br>comments?**",
+      "has_violent_threats"     =
+        "Have you ever received<br>**threats of physical violence?**",
+      "has_doxxing"             =
+        "Have you had your<br>**personal information<br>exposed?**",
+      "has_misinfo_slander"     =
+        "Have you ever been a<br>victim of **misinformation<br>or slander?**",
+      "has_ethn_race_religion"  =
+        "Have you ever received<br>an insult based on your<br>**ethnicity/religion/race?**",
+      "has_wiretapping_hacking" =
+        "Have you ever experienced<br>**wiretapping, hacking, interception<br>or monitoring** of your communications?",
+    )) ->
+survey_long
+```
+
+For the most part, the numbers are pretty similar across platforms:
+
+```{r}
+survey_long %>%
+{
+  ggplot(.) +
+    aes(y = p, x = medium, fill = response) +
+    geom_col(position = "stack") +
+    facet_wrap(vars(measure_long)) +
+    coord_flip() +
+    scale_y_continuous(limits = c(0, 1), labels = scales::percent_format()) +
+    scale_fill_manual(
+      values =
+        colours_360("lightblue", "lightgrey") %>%
+        set_names("Yes", "No"),
+      guide = NULL) +
+    theme_360() +
+    theme(
+      panel.grid.major.y = element_blank(),
+      panel.grid.minor.y = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      strip.text = element_textbox(height = unit(50, "points"), hjust = 0)) +
+    labs(
+      x = NULL, y = NULL,
+      title = toupper("Violence against female journalists"),
+      caption = paste(
+        "**CHART:** James Goldie, 360info",
+        "**DATA:** PR2Media",
+        sep = "<br>"
+      )
+    )
+} %>%
+save_360plot(here("out", "survey-responses-by-medium.png"))
+knitr::include_url(here("out", "survey-responses-by-medium.png"))
+```
