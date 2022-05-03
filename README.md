@@ -1,6 +1,6 @@
 # 360info report template
 
-What's this report all about? What kind of charts or analysis have we done?
+This analysis visualises the reported incidence of various forms of violence against female journlists in Indonesia.
 
 ## Use + Remix rights
 
@@ -8,11 +8,13 @@ What's this report all about? What kind of charts or analysis have we done?
 
 These charts, as well as the analyses that underpin them, are available under a Creative Commons Attribution 4.0 licence. This includes commercial reuse and derivates.
 
-<!-- Do any of the data sources fall under a different licence? If so, describe the licence and which parts of the data fall under it here! if most of it does, change the above and replace LICENCE.md too -->
-
 Data in these charts comes from:
 
-* Data sources here (with links!)
+* [PR2Media, 2022. Violence Against Female Journlists in Indonesia: A Threat to Journalism and Freedom of the Press](https://pr2media.or.id/wp-content/uploads/2022/04/Violence-Against-Female-Journalists-In-Indonesia.pdf)
+
+This research has been possible owing to the support of the people of the United States of America through USAID. PR2Media is fully responsible for the content of this report, and it does not in any way reflect the views of Internews, USAID, or the Government of the United States of America.
+
+Data additional to the report was provided to 360info by PR2Media. Code relating to the aggregation of the data is available in [`survey-aggregate.r`](./survey-aggregate.r), but 360info has chosen not to publish the deidentified data to protect participants' privacy.
 
 **Please attribute 360info and the data sources when you use and remix these visualisations.**
 
@@ -28,14 +30,14 @@ You'll need to:
   * Then run `renv::restore()` to install the R package dependencies.
   * (For problems satisfying R package dependencies, refer to [Quarto's documentation on virtual environments](https://quarto.org/docs/projects/virtual-environments.html).)
 
-Now, render the `.qmd` files to the `/docs` directory with:
+Now, render the `.qmd` files to the `/out` directory with:
 
 ```sh
-quarto render --output-dir docs *.qmd
+quarto render --output-dir out index.qmd
 ```
 
 ## Help
 
 <!-- replace `report-template` with the name of this repo in the link below  -->
 
-If you find any problems with our analysis or charts, please feel free to [create an issue](https://github.com/360-info/report-template/issues/new)!
+If you find any problems with our analysis or charts, please feel free to [create an issue](https://github.com/360-info/report-press-freedom/issues/new)!
